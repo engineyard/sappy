@@ -49,6 +49,20 @@ module Sappy
           monitors.first.name.should == "New Monitor"
         end
 
+        it "doesn't create invalid monitors" do
+          ['e', 'a.b', 'engineyard.c', 'oneword'].each do |hostname|
+            lambda do
+              @account.add_monitor({
+                :host => hostname,
+                :name => "Busted Monitor",
+                :service => "http",
+                :location => "sf",
+                :period => "60"
+              })
+            end.should raise_error(ArgumentError)
+          end
+        end
+
         it "lists its monitors" do
           monitor_defaults = {:service => "http", :location => "sf", :period => "60"}
           m1 = @account.add_monitor(monitor_defaults.merge(:name => 'Monitor 1', :host => 'm1.engineyard.com'))
