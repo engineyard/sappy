@@ -70,23 +70,25 @@ module Sappy
       @inactive_monitors = response.inactive
     end
 
-  public
+    public
 
-    if Sappy.mocked
-      @@mocked_accounts = {}
+    def self.mock!
+      self.class_eval do
+        @@mocked_accounts = {}
 
-      def self.mock_signup(username, password)
-        @@mocked_accounts[username] = password
-      end
-      mock_signup(USERNAME, PASSWORD)
-
-      def self.login(username, password)
-        if @@mocked_accounts[username] && @@mocked_accounts[username] == password
-          return Mock::Account.new(username, password)
-        else
-          raise Responses::Auth::LoginFailed
+        def self.mock_signup(username, password)
+          @@mocked_accounts[username] = password
         end
-      end
+        mock_signup(USERNAME, PASSWORD)
+
+        def self.login(username, password)
+          if @@mocked_accounts[username] && @@mocked_accounts[username] == password
+            return Mock::Account.new(username, password)
+          else
+            raise Responses::Auth::LoginFailed
+          end
+        end
+      end unless Sappy.mocked?
     end
   end
 end

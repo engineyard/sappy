@@ -8,10 +8,17 @@ $:.unshift File.dirname(__FILE__)
 module Sappy
   class Error < StandardError; end
 
-  class << self
-    attr_accessor :mocked
+  @@mocked = false
+  def self.mocked?
+    @@mocked
   end
-  self.mocked = !!ENV['MOCK_SAPPY']
+  
+  def self.mock!
+    require 'sappy/mock/account'
+    require 'sappy/mock/monitor'
+    Sappy::Account.mock!
+    @@mocked = true
+  end
 end
 
 require 'sappy/account'
@@ -19,8 +26,3 @@ require 'sappy/monitor'
 require 'sappy/request'
 require 'sappy/response'
 require 'sappy/responses'
-
-if Sappy.mocked
-  require 'sappy/mock/account'
-  require 'sappy/mock/monitor'
-end

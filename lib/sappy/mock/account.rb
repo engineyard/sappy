@@ -16,6 +16,7 @@ module Sappy
       end
 
       def refresh!
+        # noop
       end
 
       ## monitors
