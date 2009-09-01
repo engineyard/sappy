@@ -35,14 +35,8 @@ module Sappy
 
     describe "a monitor" do
       it "can be destroyed" do
-        if Sappy.mocked
-          FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors_1'))
-        end
         @account.monitors.size.should == 1
         lambda { @monitor.destroy }.should_not raise_error
-        if Sappy.mocked
-          FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors'))
-        end
         @account.monitors.size.should == 0
       end
     end

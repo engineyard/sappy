@@ -21,11 +21,8 @@ module Sappy
       end
 
       it "should obtain an auth key" do
-        unless Sappy.mocked
-          @account.authkey.should be_kind_of(String)
-        else
-          @account.authkey.should == "b7kks5mh1l300v5segaksm8gh3"
-        end
+        @account.authkey.should be_kind_of(String)
+        @account.authkey.should =~ /^\w+$/
       end
 
       describe "with no monitors" do
@@ -44,13 +41,9 @@ module Sappy
         it "can create a new monitor" do
           available_monitors = @account.available_monitors
           monitor = @account.add_monitor({:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60"})
-          monitor.id.should_not be_nil
+          monitor.id.should be_kind_of(String)
           @account.refresh!          
-          unless Sappy.mocked
-            @account.available_monitors.should == available_monitors - 1
-          else
-            FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors_1'))
-          end
+          @account.available_monitors.should == available_monitors - 1
           monitors = @account.monitors
           monitors.size.should == 1
           monitors.first.name.should == "New Monitor"

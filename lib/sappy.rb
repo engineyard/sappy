@@ -19,3 +19,8 @@ require 'sappy/monitor'
 require 'sappy/request'
 require 'sappy/response'
 require 'sappy/responses'
+
+if Sappy.mocked
+  require 'sappy/mock/account'
+  require 'sappy/mock/monitor'
+end
