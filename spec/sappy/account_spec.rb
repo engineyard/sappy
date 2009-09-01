@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../helper'
+require File.dirname(__FILE__) + '/../spec_helper'
 
 module Sappy
   describe Account do
     describe "with incorrect credentials" do
       it "raises an error" do
         lambda { Account.login("invalid@email.com", "password") }.
-          should.raise(Responses::Auth::LoginFailed)
+          should raise_error(Responses::Auth::LoginFailed)
       end
     end
 
@@ -22,7 +22,7 @@ module Sappy
 
       it "should obtain an auth key" do
         unless Sappy.mocked
-          @account.authkey.should.be.kind_of(String)
+          @account.authkey.should be_kind_of(String)
         else
           @account.authkey.should == "b7kks5mh1l300v5segaksm8gh3"
         end
@@ -42,10 +42,12 @@ module Sappy
         end
 
         it "can create a new monitor" do
+          available_monitors = @account.available_monitors
           monitor = @account.add_monitor({:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60"})
-          monitor.id.should.not.be.nil
+          monitor.id.should_not be_nil
+          @account.refresh!          
           unless Sappy.mocked
-            @account.available_monitors.should == 2
+            @account.available_monitors.should == available_monitors - 1
           else
             FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors_1'))
           end

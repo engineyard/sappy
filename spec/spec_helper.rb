@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'bacon'
+require 'spec'
 require 'fakeweb'
 require 'pp'
 require 'cgi'

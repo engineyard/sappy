@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../helper'
+require File.dirname(__FILE__) + '/../spec_helper'
 
 module Sappy
   describe Monitor do
@@ -18,7 +18,7 @@ module Sappy
 
       it "can be disabled" do
         @monitor.disable!
-        @monitor.should.not.be.active
+        @monitor.should_not be_active
       end
     end
 
@@ -29,18 +29,18 @@ module Sappy
 
       it "can be enabled" do
         @monitor.enable!
-        @monitor.should.be.active
+        @monitor.should be_active
       end
     end
 
     describe "a monitor" do
       it "can be destroyed" do
-        unless ENV['LIVE_SPECS']
+        if Sappy.mocked
           FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors_1'))
         end
         @account.monitors.size.should == 1
-        lambda { @monitor.destroy }.should.not.raise
-        unless ENV['LIVE_SPECS']
+        lambda { @monitor.destroy }.should_not raise_error
+        if Sappy.mocked
           FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors'))
         end
         @account.monitors.size.should == 0
