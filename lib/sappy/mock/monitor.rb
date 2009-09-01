@@ -15,7 +15,7 @@ module Sappy
       end
 
       def id
-        object_id.to_s
+        object_id
       end
 
       def enable!

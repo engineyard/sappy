@@ -24,8 +24,12 @@ module Sappy
         @available_monitors - @monitors.size
       end
 
-      def monitors
-        @monitors
+      def monitors(ids = [])
+        if ids.empty?
+          @monitors
+        else
+          @monitors.select{|m| ids.include?(m.id) }
+        end
       end
 
       def add_monitor(attrs)

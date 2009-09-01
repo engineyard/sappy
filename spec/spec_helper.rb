@@ -8,7 +8,11 @@ rescue LoadError
   raise "add a spec/credentials.rb that defines USERNAME and PASSWORD constants"
 end
 require File.dirname(__FILE__) + '/../lib/sappy'
-Sappy.mock! if ENV['MOCK_SAPPY']
+
+if ENV['MOCK_SAPPY']
+  Sappy.mock!
+  Sappy::Account.mock_signup(USERNAME, PASSWORD)
+end
 
 SPEC_DIR = File.dirname(__FILE__) unless defined? SPEC_DIR
 $:<< SPEC_DIR

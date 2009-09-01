@@ -14,7 +14,7 @@ module Sappy
         @account = Account.login(USERNAME, PASSWORD)
       end
       
-      before do
+      before(:each) do
         @account.monitors.each do |m|
           m.destroy
         end
@@ -41,12 +41,24 @@ module Sappy
         it "can create a new monitor" do
           available_monitors = @account.available_monitors
           monitor = @account.add_monitor({:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60"})
-          monitor.id.should be_kind_of(String)
+          monitor.id.should be_kind_of(Integer)
           @account.refresh!          
           @account.available_monitors.should == available_monitors - 1
           monitors = @account.monitors
           monitors.size.should == 1
           monitors.first.name.should == "New Monitor"
+        end
+
+        it "lists its monitors" do
+          monitor_defaults = {:service => "http", :location => "sf", :period => "60"}
+          m1 = @account.add_monitor(monitor_defaults.merge(:name => 'Monitor 1', :host => 'm1.engineyard.com'))
+          m2 = @account.add_monitor(monitor_defaults.merge(:name => 'Monitor 2', :host => 'm2.engineyard.com'))
+
+          @account.monitors.size.should == 2
+
+          just_m1 = @account.monitors([m1.id])
+          just_m1.size.should == 1
+          just_m1.first.id.should == m1.id
         end
       end
     end
