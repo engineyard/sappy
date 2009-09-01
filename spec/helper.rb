@@ -18,7 +18,7 @@ def cached_page(name)
   SPEC_DIR + "/xml/#{name}.xml"
 end
 
-unless ENV['LIVE_SPECS']
+if Sappy.mocked
   # Don't allow real web requests
   FakeWeb.allow_net_connect = false
 
@@ -33,8 +33,9 @@ unless ENV['LIVE_SPECS']
   FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.removemonitor&MonitorId=84043", :response => cached_page('removemonitor'))
 end
 
+# TODO: Do in mock mode too
 at_exit do
   Sappy::Account.login(USERNAME, PASSWORD).monitors.each do |m|
     m.destroy
   end
-end
+end unless Sappy.mocked

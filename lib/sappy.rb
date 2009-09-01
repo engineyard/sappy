@@ -7,6 +7,11 @@ $:.unshift File.dirname(__FILE__)
 
 module Sappy
   class Error < StandardError; end
+
+  class << self
+    attr_accessor :mocked
+  end
+  self.mocked = !!ENV['MOCK_SAPPY']
 end
 
 require 'sappy/account'

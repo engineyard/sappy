@@ -5,8 +5,7 @@ module Sappy
     describe "with incorrect credentials" do
       it "raises an error" do
         lambda { Account.login("invalid@email.com", "password") }.
-          should.raise(Responses::Auth::LoginFailed).
-          message.should.match(/Wrong email or password/)
+          should.raise(Responses::Auth::LoginFailed)
       end
     end
 
@@ -22,7 +21,7 @@ module Sappy
       end
 
       it "should obtain an auth key" do
-        if ENV['LIVE_SPECS']
+        unless Sappy.mocked
           @account.authkey.should.be.kind_of(String)
         else
           @account.authkey.should == "b7kks5mh1l300v5segaksm8gh3"
@@ -45,7 +44,7 @@ module Sappy
         it "can create a new monitor" do
           monitor = @account.add_monitor({:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60"})
           monitor.id.should.not.be.nil
-          if ENV['LIVE_SPECS']
+          unless Sappy.mocked
             @account.available_monitors.should == 2
           else
             FakeWeb.register_uri(:get, "https://siteuptime.com/api/rest/?AuthKey=b7kks5mh1l300v5segaksm8gh3&method=siteuptime.monitors", :response => cached_page('monitors_1'))
