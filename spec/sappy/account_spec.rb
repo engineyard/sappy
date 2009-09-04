@@ -10,16 +10,6 @@ module Sappy
     end
 
     describe "with correct credentials" do
-      before(:all) do
-        @account = Account.login(USERNAME, PASSWORD)
-      end
-      
-      before(:each) do
-        @account.monitors.each do |m|
-          m.destroy
-        end
-      end
-
       it "should obtain an auth key" do
         @account.authkey.should be_kind_of(String)
         @account.authkey.should =~ /^\w+$/
@@ -40,7 +30,7 @@ module Sappy
 
         it "can create a new monitor" do
           available_monitors = @account.available_monitors
-          monitor = @account.add_monitor({:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60"})
+          monitor = @account.add_monitor(:name => "New Monitor", :service => "http", :location => "sf", :host => "engineyard.com", :period => "60")
           monitor.id.should be_kind_of(Integer)
           @account.refresh!          
           @account.available_monitors.should == available_monitors - 1

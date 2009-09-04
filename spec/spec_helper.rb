@@ -26,3 +26,13 @@ at_exit do
     m.destroy
   end
 end
+
+Spec::Runner.configure do |config|
+  config.before(:all) do
+    @account = Sappy::Account.login(USERNAME, PASSWORD)
+  end
+
+  config.before(:each) do
+    @account.monitors.each { |m| m.destroy }
+  end
+end
