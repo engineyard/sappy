@@ -16,7 +16,7 @@ module Sappy
       end
 
       def id
-        object_id
+        object_id % (2**32 - 1)
       end
 
       def enable!
