@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Dylan Egan", "Tim Carey-Smith"]
-  s.date = %q{2009-09-01}
+  s.date = %q{2009-10-06}
   s.default_executable = %q{shell}
   s.description = %q{A wrapper for the SiteUptime API}
   s.email = ["dylanegan@gmail.com", "tim@spork.in"]
@@ -41,7 +41,6 @@ Gem::Specification.new do |s|
      "lib/sappy/responses/monitors.rb",
      "lib/sappy/responses/remove_monitor.rb",
      "lib/sappy/responses/summary_statistics.rb",
-     "spec/credentials.rb",
      "spec/sappy/account_spec.rb",
      "spec/sappy/monitor_spec.rb",
      "spec/spec_helper.rb"
