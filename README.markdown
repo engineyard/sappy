@@ -8,6 +8,9 @@ A ruby library providing a wrapper around the SiteUptime API.
 
     require 'rubygems'
     require 'sappy'
+	require 'net/http'
+	require 'net/https'
+
 
     @account = Sappy::Account.login('email@email.com', 'password')
 
