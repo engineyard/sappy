@@ -1,3 +1,9 @@
+## READ THIS 
+
+- Actually there's almost no reason you should want this repo, because there's an actively developed one (by the people who actually initially wrote this at EY), here:
+
+https://github.com/dylanegan/sappy                                 
+
 # sappy
 
 ## Description:
